@@ -1,0 +1,11 @@
+{
+    \"Name\" : \"SmartF4\",
+    \"Version\" : \"1.0.0\",
+    \"CompatVersion\" : \"1.0.0\",
+    \"Vendor\" : \"Svenny\",
+    \"Copyright\" : \"(C) Svenny\",
+    \"License\" : \"MIT\",
+    \"Description\" : \"Smart Source/Header switcher\",
+    \"Url\" : \"https://github.com/Svenny/smartf4\",
+    $$dependencyList
+}
