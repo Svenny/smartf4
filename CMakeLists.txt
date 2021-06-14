@@ -15,6 +15,7 @@ add_qtc_plugin(SmartF4
   PLUGIN_DEPENDS
     QtCreator::Core
     QtCreator::CppTools
+    QtCreator::ProjectExplorer
   DEPENDS
     ${QtX}::Widgets
     QtCreator::ExtensionSystem
