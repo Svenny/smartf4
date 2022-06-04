@@ -1,5 +1,25 @@
 # SmartF4
 
+This plugin can handle header/source switching better than vanilla when there are many pairs of files with the same base name.
+
+For example, assume you have the following files in your project:
+```
+src/system/one/foo.cpp
+src/module/two/foo.cpp
+include/system/one/foo.hpp
+include/module/two/foo.hpp
+```
+
+Vanilla header/source switching can easily pair `src/system/one/foo.cpp` to `include/module/two/foo.hpp` (which is surely not intended).
+This plugin implements a heuristic taking into account intermediate directories in the path which reduces chances of such misbehavior.
+
+Each matching is cached so repeated file switching is instant regardless of project size.
+Though if the plugin messes something up (and beleive me it does), this cache can be reset by a hotkey (Ctrl+Shift+F4 by default).
+
+---
+
+The rest of this readme and CI setup is copy-paste from Qt Creator plugin template project.
+
 ## How to Build
 
 Create a build directory and run
