@@ -30,4 +30,3 @@ private:
 };
 
 } // namespace SmartF4::Internal
-

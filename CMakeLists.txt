@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
 
 project(SmartF4)
 
@@ -14,7 +14,7 @@ set(QtX Qt${QT_VERSION_MAJOR})
 add_qtc_plugin(SmartF4
   PLUGIN_DEPENDS
     QtCreator::Core
-    QtCreator::CppTools
+    QtCreator::CppEditor
     QtCreator::ProjectExplorer
   DEPENDS
     ${QtX}::Widgets

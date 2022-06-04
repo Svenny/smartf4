@@ -8,11 +8,10 @@
 #include <coreplugin/editormanager/editormanager.h>
 
 #include <cppeditor/cppeditorconstants.h>
-
-#include <cpptools/cppprojectfile.h>
-#include <cpptools/cppmodelmanager.h>
-#include <cpptools/cpptoolsconstants.h>
-#include <cpptools/projectinfo.h>
+#include <cppeditor/cppmodelmanager.h>
+#include <cppeditor/cppprojectfile.h>
+#include <cppeditor/cpptoolsreuse.h>
+#include <cppeditor/projectinfo.h>
 
 #include <projectexplorer/project.h>
 #include <projectexplorer/projecttree.h>
@@ -55,24 +54,24 @@ static QSet<QString> matchingFilenames(const QFileInfo &fileInfo)
 {
 	static const QStringList headerSuffixes = [](){
 		QStringList list;
-		list += Utils::mimeTypeForName(CppTools::Constants::C_SOURCE_MIMETYPE).suffixes();
-		list += Utils::mimeTypeForName(CppTools::Constants::CPP_SOURCE_MIMETYPE).suffixes();
-		list += Utils::mimeTypeForName(CppTools::Constants::OBJECTIVE_C_SOURCE_MIMETYPE).suffixes();
-		list += Utils::mimeTypeForName(CppTools::Constants::OBJECTIVE_CPP_SOURCE_MIMETYPE).suffixes();
-		list += Utils::mimeTypeForName(CppTools::Constants::CUDA_SOURCE_MIMETYPE).suffixes();
+		list += Utils::mimeTypeForName(CppEditor::Constants::C_SOURCE_MIMETYPE).suffixes();
+		list += Utils::mimeTypeForName(CppEditor::Constants::CPP_SOURCE_MIMETYPE).suffixes();
+		list += Utils::mimeTypeForName(CppEditor::Constants::OBJECTIVE_C_SOURCE_MIMETYPE).suffixes();
+		list += Utils::mimeTypeForName(CppEditor::Constants::OBJECTIVE_CPP_SOURCE_MIMETYPE).suffixes();
+		list += Utils::mimeTypeForName(CppEditor::Constants::CUDA_SOURCE_MIMETYPE).suffixes();
 		return list;
 	}();
 
 	static const QStringList sourceSuffixes = [](){
 		QStringList list;
-		list += Utils::mimeTypeForName(CppTools::Constants::C_HEADER_MIMETYPE).suffixes();
-		list += Utils::mimeTypeForName(CppTools::Constants::CPP_HEADER_MIMETYPE).suffixes();
+		list += Utils::mimeTypeForName(CppEditor::Constants::C_HEADER_MIMETYPE).suffixes();
+		list += Utils::mimeTypeForName(CppEditor::Constants::CPP_HEADER_MIMETYPE).suffixes();
 		return list;
 	}();
 
-	const CppTools::ProjectFile::Kind kind = CppTools::ProjectFile::classify(fileInfo.fileName());
-	const bool isHeader = CppTools::ProjectFile::isHeader(kind);
-	const bool isSource = CppTools::ProjectFile::isSource(kind);
+	const CppEditor::ProjectFile::Kind kind = CppEditor::ProjectFile::classify(fileInfo.fileName());
+	const bool isHeader = CppEditor::ProjectFile::isHeader(kind);
+	const bool isSource = CppEditor::ProjectFile::isSource(kind);
 	if (!isHeader && !isSource) {
 		return {};
 	}
@@ -198,11 +197,11 @@ QString SmartF4Plugin::nearestHeaderOrSource(const QString &fileName)
 	}
 
 	// Find files in other projects
-	const auto *modelManager = CppTools::CppModelManager::instance();
-	const QList<CppTools::ProjectInfo> projectInfos = modelManager->projectInfos();
+	const auto *modelManager = CppEditor::CppModelManager::instance();
+	const auto projectInfos = modelManager->projectInfos();
 
 	for (const auto &info : projectInfos) {
-		const ProjectExplorer::Project *project = info.project().data();
+		const ProjectExplorer::Project *project = CppEditor::projectForProjectInfo(*info);
 		if (!project || project == currentProject) {
 			// We have already checked the current project
 			 continue;
